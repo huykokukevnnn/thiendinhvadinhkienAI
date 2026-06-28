@@ -42,6 +42,9 @@
 </head>
 <body class="bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 text-slate-800 min-h-screen w-full flex items-center justify-center overflow-hidden font-sans antialiased selection:bg-teal-200 m-0 p-0 relative">
     
+    <!-- Audio BGM -->
+    <audio id="bgm-loop" src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=lofi-study-112191.mp3" loop preload="auto"></audio>
+
     <!-- CRT Overlay -->
     <div class="crt-overlay pointer-events-none fixed inset-0 z-[999] opacity-20"></div>
 
@@ -102,19 +105,13 @@
             
             <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
                 <!-- Dropzone: Husky -->
-                <div class="flex-1 bg-gradient-to-b from-blue-50 to-blue-100 rounded-[2rem] border-4 border-blue-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone" id="dropzone-husky">
-                    <!-- Background texture/icon -->
-                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-                        <i class="ph-fill ph-house text-[15rem] text-blue-900"></i>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('house_pixel.png');" id="dropzone-husky">
+                    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">NGÔI NHÀ</h3>
+                    <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
+                        Đã cứu: <span id="husky-counter" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
-                    <div class="w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10 relative">
-                        <i class="ph-fill ph-house text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-blue-900 z-10 mb-2 drop-shadow-md text-center">Ngôi Nhà</h3>
-                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-blue-800 z-10 shadow-sm border border-blue-200 flex items-center">
-                        Đã cứu: <span id="husky-counter" class="text-2xl ml-2 text-blue-600">0</span>
-                    </div>
-                    <div id="husky-container" class="absolute inset-0 pointer-events-none z-0"></div>
+                    <div id="husky-container" class="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"></div>
                 </div>
 
                 <!-- Draggable Items Container -->
@@ -165,19 +162,13 @@
                 </div>
 
                 <!-- Dropzone: Wolf -->
-                <div class="flex-1 bg-gradient-to-b from-emerald-50 to-emerald-100 rounded-[2rem] border-4 border-emerald-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone" id="dropzone-wolf">
-                    <!-- Background texture/icon -->
-                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-                        <i class="ph-fill ph-tree-evergreen text-[15rem] text-emerald-900"></i>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('forest_pixel.png');" id="dropzone-wolf">
+                    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG HOANG DÃ</h3>
+                    <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
+                        Đã thả: <span id="wolf-counter" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
-                    <div class="w-24 h-24 rounded-full bg-emerald-600 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(5,150,105,0.5)] z-10 relative">
-                        <i class="ph-fill ph-tree-evergreen text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-emerald-900 z-10 mb-2 drop-shadow-md text-center">Rừng Hoang Dã</h3>
-                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-emerald-800 z-10 shadow-sm border border-emerald-200 flex items-center">
-                        Đã thả: <span id="wolf-counter" class="text-2xl ml-2 text-emerald-600">0</span>
-                    </div>
-                    <div id="wolf-container" class="absolute inset-0 pointer-events-none z-0"></div>
+                    <div id="wolf-container" class="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"></div>
                 </div>
 
                 <!-- Dropzone: Other -->
@@ -193,7 +184,7 @@
                     <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-amber-800 z-10 shadow-sm border border-amber-200 flex items-center">
                         Chuyển đi: <span id="other-counter" class="text-2xl ml-2 text-amber-600">0</span>
                     </div>
-                    <div id="other-container" class="absolute inset-0 pointer-events-none z-0"></div>
+                    <div id="other-container" class="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"></div>
                 </div>
             </div>
         </section>
@@ -207,16 +198,11 @@
             
             <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0 w-full">
                 <!-- Dropzone: Husky (AI) -->
-                <div class="flex-1 bg-gradient-to-b from-blue-50 to-blue-100 rounded-[2rem] border-4 border-blue-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner">
-                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-                        <i class="ph-fill ph-house text-[15rem] text-blue-900"></i>
-                    </div>
-                    <div class="w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10 relative">
-                        <i class="ph-fill ph-house text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-blue-900 z-10 mb-2 drop-shadow-md text-center">Ngôi Nhà</h3>
-                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-blue-800 z-10 shadow-sm border border-blue-200 flex items-center">
-                        AI đã cứu: <span id="ai-count-husky" class="text-2xl ml-2 text-blue-600">0</span>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('house_pixel.png');">
+                    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">NGÔI NHÀ</h3>
+                    <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
+                        AI đã cứu: <span id="ai-count-husky" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
                 </div>
 
@@ -262,16 +248,11 @@
                 </div>
 
                 <!-- Dropzone: Wolf (AI) -->
-                <div class="flex-1 bg-gradient-to-b from-emerald-50 to-emerald-100 rounded-[2rem] border-4 border-emerald-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner">
-                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-                        <i class="ph-fill ph-tree-evergreen text-[15rem] text-emerald-900"></i>
-                    </div>
-                    <div class="w-24 h-24 rounded-full bg-emerald-600 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(5,150,105,0.5)] z-10 relative">
-                        <i class="ph-fill ph-tree-evergreen text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-emerald-900 z-10 mb-2 drop-shadow-md text-center">Rừng Hoang Dã</h3>
-                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-emerald-800 z-10 shadow-sm border border-emerald-200 flex items-center">
-                        AI đã thả: <span id="ai-count-wolf" class="text-2xl ml-2 text-emerald-600">0</span>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('forest_pixel.png');">
+                    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG HOANG DÃ</h3>
+                    <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
+                        AI đã thả: <span id="ai-count-wolf" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
                 </div>
             </div>

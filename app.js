@@ -139,6 +139,14 @@ setTimeout(advanceDialogue, 500);
 
 btnStart.addEventListener('click', () => {
     SFX.blip();
+    
+    // Play BGM
+    const bgm = document.getElementById('bgm-loop');
+    if (bgm) {
+        bgm.volume = 0.4;
+        bgm.play().catch(e => console.log("BGM play prevented by browser"));
+    }
+    
     gameEngine.currentState = 1;
     setupTrainingRound(1);
     showState(1);
@@ -350,12 +358,25 @@ dropzones.forEach(zone => {
         
         // Unconditional placement
         zone.targetContainer.appendChild(itemEl);
-        // Do not remove draggable-item so user can change mind
-        itemEl.classList.add('scale-100');
+        
+        // Remove draggable constraint on drop so it snaps back if needed
+        // but flex container naturally centers it now!
         
         // Store active item and show Save button
         activeDraggedItem = itemEl;
         btnSaveItem.classList.remove('scale-0', 'opacity-0', 'pointer-events-none');
+        
+        // Update button text and style dynamically
+        if (targetZone === 'husky') {
+            btnSaveItem.innerHTML = '<i class="ph-bold ph-house"></i> Nhận nuôi';
+            btnSaveItem.className = 'w-full py-3 text-white font-bold rounded-xl text-lg transition-all shadow-lg flex items-center justify-center gap-2 mt-2 bg-blue-600 hover:bg-blue-700';
+        } else if (targetZone === 'wolf') {
+            btnSaveItem.innerHTML = '<i class="ph-bold ph-tree-evergreen"></i> Thả về tự nhiên';
+            btnSaveItem.className = 'w-full py-3 text-white font-bold rounded-xl text-lg transition-all shadow-lg flex items-center justify-center gap-2 mt-2 bg-emerald-600 hover:bg-emerald-700';
+        } else {
+            btnSaveItem.innerHTML = '<i class="ph-bold ph-traffic-cone"></i> Gửi về trạm';
+            btnSaveItem.className = 'w-full py-3 text-white font-bold rounded-xl text-lg transition-all shadow-lg flex items-center justify-center gap-2 mt-2 bg-amber-500 hover:bg-amber-600';
+        }
     });
 });
 
@@ -378,8 +399,16 @@ if (btnSaveItem) {
             totalWolfDropped++;
         }
         
-        // Start Teleport Suck Animation
-        activeDraggedItem.classList.add('animate-teleport-suck');
+        // Start Custom Animation based on zone
+        if (typeof SFX !== 'undefined') SFX.warp();
+        
+        if (activeDraggedItem.parentNode.id === 'husky-container') {
+            activeDraggedItem.classList.add('animate-walk-to-house');
+        } else if (activeDraggedItem.parentNode.id === 'wolf-container') {
+            activeDraggedItem.classList.add('animate-run-to-forest');
+        } else {
+            activeDraggedItem.classList.add('animate-teleport-suck');
+        }
         
         const consoleText = document.getElementById('coding-console-text');
         
