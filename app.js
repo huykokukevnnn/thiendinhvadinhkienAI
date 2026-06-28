@@ -815,7 +815,8 @@ const limeConclusion = document.getElementById('lime-conclusion');
 function updateLime(value) {
     // value goes from 0 to 100
     const opacity = value / 100;
-    limeHeatmap.style.opacity = opacity;
+    limeHeatmap.style.opacity = 1;
+    limeHeatmap.style.filter = `brightness(${1 - opacity})`;
     limeFocusBox.style.opacity = opacity > 0.3 ? opacity : 0;
     
     if (value > 80) {
