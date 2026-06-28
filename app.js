@@ -16,7 +16,7 @@ function playTone(freq, type, duration, vol) {
 }
 
 const SFX = {
-    type: () => playTone(600 + Math.random()*200, 'square', 0.05, 0.02),
+    type: () => playTone(400 + Math.random()*50, 'sine', 0.04, 0.015),
     blip: () => playTone(800, 'sine', 0.1, 0.05),
     warp: () => playTone(300, 'triangle', 0.4, 0.1),
     error: () => playTone(150, 'sawtooth', 0.5, 0.1),
