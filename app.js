@@ -135,8 +135,20 @@ function advanceDialogue() {
 }
 
 btnNextDialogue.addEventListener('click', advanceDialogue);
-// Initialize first dialogue automatically
-setTimeout(advanceDialogue, 500);
+btnNextDialogue.addEventListener('click', advanceDialogue);
+// Wait for user interaction to start AudioContext
+const btnStartIntro = document.getElementById('btn-start-intro');
+if (btnStartIntro) {
+    btnStartIntro.addEventListener('click', () => {
+        const introOverlay = document.getElementById('intro-overlay');
+        introOverlay.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => {
+            introOverlay.remove();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            advanceDialogue();
+        }, 500);
+    });
+}
 
 btnStart.addEventListener('click', () => {
     SFX.blip();
@@ -761,7 +773,9 @@ async function showNewsSequence() {
         article1.classList.remove('scale-0', 'opacity-0');
         article1.classList.add('scale-100', 'opacity-100');
     }
-    if (typeof SFX !== 'undefined') SFX.error();
+    // Dramatic hit sound
+    playTone(150, 'square', 0.5, 0.3);
+    setTimeout(() => playTone(80, 'sawtooth', 0.8, 0.4), 100);
     
     // Drop trust to 50%
     if (trustBar) trustBar.style.width = '50%';
@@ -775,10 +789,11 @@ async function showNewsSequence() {
         article2.classList.remove('scale-0', 'opacity-0');
         article2.classList.add('scale-100', 'opacity-100');
     }
-    if (typeof SFX !== 'undefined') {
-        SFX.error();
-        SFX.siren();
-    }
+    
+    // Dramatic double hit sound
+    playTone(150, 'square', 0.5, 0.3);
+    setTimeout(() => playTone(50, 'sawtooth', 1.0, 0.5), 100);
+    if (typeof SFX !== 'undefined') SFX.siren();
     
     // Drop trust to CRITICAL
     if (trustBar) {
