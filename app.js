@@ -1,5 +1,6 @@
 // --- Audio System (Web Audio API) ---
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+const delay = ms => new Promise(res => setTimeout(res, ms));
 
 function playTone(freq, type, duration, vol) {
     if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -168,14 +169,26 @@ function setupTrainingRound(roundNumber) {
     activeDraggedItem = null;
     document.getElementById('training-title').textContent = `Vòng Huấn Luyện ${roundNumber}`;
     
-    // Typewriter for state 1 dialogue
+    // Typewriter for state 1 dialogue (Overlay)
+    const overlay = document.getElementById('state-1-overlay');
     const state1Dialogue = document.getElementById('state-1-dialogue-text');
-    if (state1Dialogue) {
-        if (roundNumber === 1) {
-            typeWriter("Hướng dẫn\nBạn hãy kéo thả hình vào nơi phù hợp\nHusky sẽ được trả về trung tâm bảo tồn\nSói sẽ được thả về tự nhiên", state1Dialogue);
-        } else {
-            typeWriter("Vòng Huấn Luyện 2\nĐộ khó tăng lên. Hãy cẩn thận với những sinh vật lạ không thuộc về rừng hay trung tâm bảo tồn!", state1Dialogue);
-        }
+    const btnContinue = document.getElementById('btn-state-1-continue');
+    
+    if (overlay && state1Dialogue) {
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        btnContinue.classList.add('hidden');
+        
+        const text = roundNumber === 1 
+            ? "Hướng dẫn\nBạn hãy kéo thả hình vào nơi phù hợp\nHusky sẽ được trả về trung tâm bảo tồn\nSói sẽ được thả về tự nhiên"
+            : "Vòng Huấn Luyện 2\nĐộ khó tăng lên. Hãy cẩn thận với những sinh vật lạ không thuộc về rừng hay trung tâm bảo tồn!";
+            
+        typeWriter(text, state1Dialogue).then(() => {
+            btnContinue.classList.remove('hidden');
+        });
+        
+        btnContinue.onclick = () => {
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+        };
     }
     
     document.getElementById('draggable-items-container').innerHTML = '';
@@ -594,8 +607,6 @@ async function startAutoRun() {
         }
     }, 50);
     
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-
     for (let i = 0; i < gameEngine.testData.length; i++) {
         const data = gameEngine.testData[i];
         

@@ -99,13 +99,19 @@
 
         <!-- STATE 1 & 2: Training Rounds -->
         <section id="state-training" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full">
-            <!-- Dialogue Box in State 1 -->
-            <div id="state-1-dialogue-container" class="w-full max-w-2xl mx-auto bg-slate-900 rounded-xl border-2 border-slate-700 p-4 mb-4 flex flex-col items-start text-left shadow-lg relative">
-                <div class="absolute -top-3 left-4 bg-teal-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-widest text-xs shadow-md border border-teal-700">
-                    Trạm Trưởng
+            <!-- Dialogue Box in State 1 (Overlay Modal) -->
+            <div id="state-1-overlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex flex-col items-center justify-center transition-all duration-500 opacity-0 pointer-events-none">
+                <div id="state-1-dialogue-container" class="w-[90%] max-w-2xl bg-slate-900 rounded-xl border-2 border-slate-700 p-6 flex flex-col items-start text-left shadow-2xl relative">
+                    <div class="absolute -top-3 left-4 bg-teal-500 text-white px-2 py-0.5 rounded font-bold uppercase tracking-widest text-xs shadow-md border border-teal-700">
+                        Trạm Trưởng
+                    </div>
+                    <h2 id="training-title" class="hidden text-3xl font-bold text-slate-800 mb-2">Vòng Huấn Luyện 1</h2>
+                    <p id="state-1-dialogue-text" class="text-teal-400 font-mono text-sm md:text-base leading-relaxed w-full whitespace-pre-line min-h-[5rem]"></p>
+                    
+                    <button id="btn-state-1-continue" class="mt-6 px-6 py-2 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-500 transition-all shadow-md self-end hidden">
+                        Tiếp tục
+                    </button>
                 </div>
-                <h2 id="training-title" class="hidden text-3xl font-bold text-slate-800 mb-2">Vòng Huấn Luyện 1</h2>
-                <p id="state-1-dialogue-text" class="text-teal-400 font-mono text-sm leading-relaxed w-full whitespace-pre-line min-h-[5rem]"></p>
             </div>
             
             <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
