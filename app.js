@@ -688,6 +688,23 @@ async function showNewsSequence() {
     const trustPercentage = document.getElementById('trust-percentage');
     const trustWarning = document.getElementById('trust-warning');
     
+    // Stop normal BGM smoothly
+    const bgm = document.getElementById('bgm-loop');
+    const bgmIntense = document.getElementById('bgm-intense');
+    
+    if (bgm) {
+        let vol = bgm.volume;
+        const fadeOut = setInterval(() => {
+            if (vol > 0.05) {
+                vol -= 0.05;
+                bgm.volume = vol;
+            } else {
+                clearInterval(fadeOut);
+                bgm.pause();
+            }
+        }, 100);
+    }
+    
     // Reset states
     if (article1) {
         article1.classList.remove('scale-100', 'opacity-100');
@@ -712,6 +729,13 @@ async function showNewsSequence() {
     
     // Show first article after 2s
     await delay(2000);
+    
+    // Play intense BGM
+    if (bgmIntense) {
+        bgmIntense.volume = 0.5;
+        bgmIntense.play().catch(e => console.log('BGM intense prevented'));
+    }
+    
     if (article1) {
         article1.classList.remove('scale-0', 'opacity-0');
         article1.classList.add('scale-100', 'opacity-100');

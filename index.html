@@ -44,6 +44,7 @@
     
     <!-- Audio BGM -->
     <audio id="bgm-loop" src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_febc508520.mp3?filename=lofi-study-112191.mp3" loop preload="auto"></audio>
+    <audio id="bgm-intense" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2fc48a97c1.mp3?filename=suspense-music-111100.mp3" loop preload="auto"></audio>
 
     <!-- CRT Overlay -->
     <div class="crt-overlay pointer-events-none fixed inset-0 z-[999] opacity-20"></div>
@@ -105,9 +106,9 @@
             
             <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
                 <!-- Dropzone: Husky -->
-                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('house_pixel.png');" id="dropzone-husky">
-                    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
-                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">NGÔI NHÀ</h3>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('center_pixel.png');" id="dropzone-husky">
+                    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+                    <h3 class="text-2xl lg:text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">TRUNG TÂM BẢO TỒN</h3>
                     <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
                         Đã cứu: <span id="husky-counter" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
@@ -162,9 +163,9 @@
                 </div>
 
                 <!-- Dropzone: Wolf -->
-                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('forest_pixel.png');" id="dropzone-wolf">
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone bg-cover bg-center" style="background-image: url('snow_forest_pixel.png');" id="dropzone-wolf">
                     <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
-                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG HOANG DÃ</h3>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG TUYẾT</h3>
                     <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
                         Đã thả: <span id="wolf-counter" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
@@ -172,16 +173,10 @@
                 </div>
 
                 <!-- Dropzone: Other -->
-                <div class="flex-1 bg-gradient-to-b from-amber-50 to-amber-100 rounded-[2rem] border-4 border-amber-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone hidden" id="dropzone-other">
-                    <!-- Background texture/icon -->
-                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-                        <i class="ph-fill ph-traffic-cone text-[15rem] text-amber-900"></i>
-                    </div>
-                    <div class="w-24 h-24 rounded-full bg-amber-500 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(245,158,11,0.5)] z-10 relative">
-                        <i class="ph-fill ph-traffic-cone text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-amber-900 z-10 mb-2 drop-shadow-md text-center">Trạm Kiểm Lâm</h3>
-                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-amber-800 z-10 shadow-sm border border-amber-200 flex items-center">
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner dropzone hidden bg-cover bg-center" style="background-image: url('ranger_pixel.png');" id="dropzone-other">
+                    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">TRẠM KIỂM LÂM</h3>
+                    <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
                         Chuyển đi: <span id="other-counter" class="text-2xl ml-2 text-amber-600">0</span>
                     </div>
                     <div id="other-container" class="absolute inset-0 pointer-events-none z-0 flex items-center justify-center"></div>
@@ -198,9 +193,9 @@
             
             <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0 w-full">
                 <!-- Dropzone: Husky (AI) -->
-                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('house_pixel.png');">
-                    <div class="absolute inset-0 bg-black/30 pointer-events-none"></div>
-                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">NGÔI NHÀ</h3>
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('center_pixel.png');">
+                    <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
+                    <h3 class="text-2xl lg:text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">TRUNG TÂM BẢO TỒN</h3>
                     <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
                         AI đã cứu: <span id="ai-count-husky" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
@@ -248,9 +243,9 @@
                 </div>
 
                 <!-- Dropzone: Wolf (AI) -->
-                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('forest_pixel.png');">
+                <div class="flex-1 rounded-[2rem] border-4 border-slate-700 flex flex-col items-center justify-start p-6 transition-all duration-300 relative overflow-hidden shadow-inner bg-cover bg-center" style="background-image: url('snow_forest_pixel.png');">
                     <div class="absolute inset-0 bg-black/40 pointer-events-none"></div>
-                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG HOANG DÃ</h3>
+                    <h3 class="text-3xl font-black text-white z-10 mb-2 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] text-center font-mono tracking-widest mt-4">RỪNG TUYẾT</h3>
                     <div class="bg-slate-900/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-white z-10 shadow-sm border border-slate-700 flex items-center font-mono text-sm mt-auto">
                         AI đã thả: <span id="ai-count-wolf" class="text-2xl ml-2 text-teal-400">0</span>
                     </div>
@@ -283,7 +278,7 @@
             
             <div class="flex-1 flex flex-col md:flex-row gap-8 items-stretch justify-center">
                 <!-- Article 1 -->
-                <div id="article-1" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform -rotate-1 hover:rotate-0 transition-all duration-700 cursor-pointer scale-0 opacity-0">
+                <div id="article-1" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform -rotate-1 hover:rotate-0 hover:scale-105 hover:z-50 transition-all duration-700 cursor-pointer scale-0 opacity-0 relative">
                     <div class="border-b-4 border-slate-900 pb-2 mb-4">
                         <h1 class="font-serif text-3xl font-black text-slate-900 leading-tight">Nhiều người bắt gặp loài Husky xuất hiện trong rừng</h1>
                         <p class="text-sm font-bold text-slate-500 mt-2">Báo Cập Nhật Hằng Ngày • 15/10</p>
@@ -295,7 +290,7 @@
                 </div>
                 
                 <!-- Article 2 -->
-                <div id="article-2" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform rotate-1 hover:rotate-0 transition-all duration-700 cursor-pointer scale-0 opacity-0">
+                <div id="article-2" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform rotate-1 hover:rotate-0 hover:scale-105 hover:z-50 transition-all duration-700 cursor-pointer scale-0 opacity-0 relative">
                     <div class="border-b-4 border-red-700 pb-2 mb-4">
                         <h1 class="font-serif text-3xl font-black text-slate-900 leading-tight">Husky xuất hiện trong rừng ngày càng nhiều, nghi vấn đang hướng về phía Trung tâm bảo tồn</h1>
                         <p class="text-sm font-bold text-slate-500 mt-2">Tạp Chí Thiên Nhiên • 16/10</p>
