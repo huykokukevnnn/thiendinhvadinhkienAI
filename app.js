@@ -664,12 +664,8 @@ async function startAutoRun() {
             }
             await delay(1000);
             
-            // Move animation to respective side
-            if (data.type === 'Husky') {
-                currentItemBox.style.transform = "translateX(-350px) scale(0) rotate(-360deg)";
-            } else {
-                currentItemBox.style.transform = "translateX(350px) scale(0) rotate(360deg)";
-            }
+            // Move animation to center
+            currentItemBox.style.transform = "scale(0) rotate(-360deg)";
             currentItemBox.classList.add('opacity-0');
             
             await delay(700);
@@ -721,22 +717,7 @@ async function showNewsSequence() {
     const trustPercentage = document.getElementById('trust-percentage');
     const trustWarning = document.getElementById('trust-warning');
     
-    // Stop normal BGM smoothly
-    const bgm = document.getElementById('bgm-loop');
-    const bgmIntense = document.getElementById('bgm-intense');
-    
-    if (bgm) {
-        let vol = bgm.volume;
-        const fadeOut = setInterval(() => {
-            if (vol > 0.05) {
-                vol -= 0.05;
-                bgm.volume = vol;
-            } else {
-                clearInterval(fadeOut);
-                bgm.pause();
-            }
-        }, 100);
-    }
+    // BGM remains continuous (no fading or stopping)
     
     // Reset states
     if (article1) {
@@ -763,11 +744,7 @@ async function showNewsSequence() {
     // Show first article after 2s
     await delay(2000);
     
-    // Play intense BGM
-    if (bgmIntense) {
-        bgmIntense.volume = 0.5;
-        bgmIntense.play().catch(e => console.log('BGM intense prevented'));
-    }
+    // (Intense BGM no longer plays, bgm-loop continues)
     
     if (article1) {
         article1.classList.remove('scale-0', 'opacity-0');
