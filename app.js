@@ -1,23 +1,24 @@
-// State Tracking Object (As requested)
 const gameEngine = {
     currentState: 0,
     droppedCount: 0,
     trainingData: [
-        { id: 1, type: "Husky", src: "1.jpeg", round: 1 },
-        { id: 6, type: "Wolf", src: "6.jpeg", round: 1 },
-        { id: 2, type: "Husky", src: "2.jpg", round: 1 },
-        { id: 7, type: "Wolf", src: "7.jpg", round: 2 },
-        { id: 3, type: "Husky", src: "3.jpeg", round: 2 },
-        { id: 8, type: "Wolf", src: "8.jpg", round: 2 },
-        { id: 13, type: "Other", src: "13.jpg", round: 2 },
-        { id: 15, type: "Other", src: "15.jpg", round: 2 }
+      // Round 1
+      { id: 1, type: "Husky", src: "https://images.unsplash.com/photo-1531804055935-76f44d7c3621?auto=format&fit=crop&w=400&q=80", round: 1 },
+      { id: 2, type: "Wolf", src: "https://images.unsplash.com/photo-1590420485404-f86d22b8ab18?auto=format&fit=crop&w=400&q=80", round: 1 },
+      { id: 3, type: "Husky", src: "https://images.unsplash.com/photo-1547149666-769b42052e67?auto=format&fit=crop&w=400&q=80", round: 1 },
+      // Round 2 (With Noise/Outliers)
+      { id: 4, type: "Wolf", src: "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&w=400&q=80", round: 2 },
+      { id: 5, type: "Husky", src: "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?auto=format&fit=crop&w=400&q=80", round: 2 },
+      { id: 6, type: "Other", src: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80", round: 2 }, // Cat on snow
+      { id: 7, type: "Wolf", src: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=400&q=80", round: 2 },
+      { id: 8, type: "Other", src: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=400&q=80", round: 2 }  // Corgi on grass
     ],
     testData: [
-        { id: 4, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "4.jpg" },
-        { id: 9, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "9.avif" },
-        { id: 5, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "5.jpg" },
-        { id: 10, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "10.jpg" },
-        { id: 11, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "11.jpg" } // AI thinks this Husky is a Wolf
+      { id: 1, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "https://images.unsplash.com/photo-1608096275281-67c4ab6fbddc?auto=format&fit=crop&w=400&q=80" },
+      { id: 2, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "https://images.unsplash.com/photo-1568572933382-74d440642117?auto=format&fit=crop&w=400&q=80" },
+      { id: 3, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "https://images.unsplash.com/photo-1504221718055-6b4df9d01be8?auto=format&fit=crop&w=400&q=80" },
+      { id: 4, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "https://images.unsplash.com/photo-1605192554106-d549b1b975cd?auto=format&fit=crop&w=400&q=80" },
+      { id: 5, type: "Husky_Snow", aiGuess: "CHÓ SÓI", correct: false, src: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80" }
     ]
 };
 
@@ -499,6 +500,18 @@ async function startAutoRun() {
             currentItemBox.classList.remove('scale-100', 'opacity-100');
             currentItemBox.classList.add('scale-0', 'opacity-0');
             await delay(300);
+        } else {
+            // Incorrect guess (The Husky on Snow)
+            badge.classList.add('bg-red-600', 'animate-pulse');
+            wolfCount++; // AI wrongly predicted it as Wolf
+            wolfCountEl.textContent = wolfCount;
+            currentItemBox.classList.add('border-red-500');
+            
+            // Give it a moment to sink in, then clear it or keep it until transition.
+            await delay(2000);
+            currentItemBox.classList.remove('scale-100', 'opacity-100');
+            currentItemBox.classList.add('scale-0', 'opacity-0');
+            await delay(300);
         }
     }
 
@@ -507,8 +520,8 @@ async function startAutoRun() {
     clearInterval(binaryInterval);
     if (consoleText) consoleText.textContent = "// Hoàn tất phân tích dữ liệu.";
 
-    // Set data for LIME (State 5) using the misclassified image
-    document.getElementById('lime-base-img').src = "11.jpg";
+    // Set data for LIME (State 5) using the misclassified image (the last one in the test data)
+    document.getElementById('lime-base-img').src = "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80";
 
     // Auto transition to State 4 after all tests complete successfully
     await delay(1000);
