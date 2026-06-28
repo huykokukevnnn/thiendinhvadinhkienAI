@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thám Tử AI: Chiến Dịch Giải Cứu Động Vật</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                    },
+                    colors: {
+                        agency: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Phosphor Icons (Modern & Clean) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body class="bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 text-slate-800 min-h-screen w-full flex items-center justify-center overflow-hidden font-sans antialiased selection:bg-teal-200 m-0 p-0">
+
+    <!-- Core Card Wrapper -->
+    <main id="app-container" class="w-full h-full min-h-screen bg-white/95 backdrop-blur-md transition-all duration-500 ease-in-out flex flex-col relative overflow-hidden flex-1 p-6 lg:p-10">
+        
+        <!-- Header / Nav -->
+        <header class="flex justify-between items-center mb-8 pb-4 border-b border-teal-100/50">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-400 to-emerald-500 flex items-center justify-center shadow-lg shadow-teal-500/20 text-white">
+                    <i class="ph-fill ph-magnifying-glass text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl text-slate-800 leading-tight">Thám Tử AI</h1>
+                    <p class="text-xs font-medium text-teal-600 uppercase tracking-wider">Tổ Chức Cứu Hộ Động Vật</p>
+                </div>
+            </div>
+            <div id="progress-indicator" class="hidden flex items-center gap-2 text-sm font-semibold text-slate-500 bg-slate-100 px-4 py-2 rounded-full">
+                <i class="ph ph-target text-teal-500 text-lg"></i>
+                <span id="progress-text">Giai đoạn 1/5</span>
+            </div>
+        </header>
+
+        <!-- STATE 0: Welcome Dashboard -->
+        <section id="state-0" class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in state-container">
+            <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                <i class="ph-duotone ph-paw-print text-5xl text-teal-600 animate-bounce-slow"></i>
+            </div>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-800 mb-6 tracking-tight">Chiến Dịch Giải Cứu Động Vật</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mb-10 leading-relaxed">
+                Trung tâm bảo tồn động vật đã thu nhận thêm rất nhiều cá thể động vật trong đó <strong class="text-slate-700">chó Sói</strong> và <strong class="text-blue-600">chó Husky</strong> đang bị nhầm lẫn. Chúng ta không thể phân loại chúng một cách thủ công được. Vì vậy bạn hãy lập trình ra một Hệ thống phân loại thông minh để tiết kiệm công sức và thời gian. Các cá thể chó Sói sẽ được thả về tự nhiên.
+            </p>
+            <button id="btn-start" class="group relative px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl text-lg hover:bg-slate-800 transition-all active:scale-95 shadow-xl hover:shadow-2xl flex items-center gap-3 overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <span class="relative z-10">Bắt đầu Huấn Luyện</span>
+                <i class="ph-bold ph-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+            </button>
+        </section>
+
+        <!-- STATE 1 & 2: Training Rounds -->
+        <section id="state-training" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full">
+            <div class="text-center mb-6">
+                <h2 id="training-title" class="text-3xl font-bold text-slate-800 mb-2">Vòng Huấn Luyện 1</h2>
+                <p class="text-slate-500 font-medium">Kéo thả hình ảnh vào đúng khu vực tương ứng để dạy AI.</p>
+            </div>
+            
+            <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0">
+                <!-- Dropzone: Husky -->
+                <div class="flex-1 bg-blue-50/50 rounded-[2rem] border-2 border-dashed border-blue-200 flex flex-col p-6 transition-all duration-300" id="dropzone-husky">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                            <i class="ph-fill ph-dog text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-blue-900">Khu vực Husky</h3>
+                    </div>
+                    <div class="flex-1 grid grid-cols-2 gap-4 auto-rows-max items-start content-start" id="husky-container">
+                        <!-- Dropped items go here -->
+                    </div>
+                </div>
+
+                <!-- Draggable Items Container -->
+                <div class="w-full lg:w-[25%] bg-slate-50 rounded-[2rem] p-6 flex flex-col items-center justify-start gap-4 overflow-hidden relative">
+                    <!-- Classification Guide Board -->
+                    <div class="w-full bg-blue-50 border border-blue-200 rounded-xl p-4 shadow-sm text-sm mb-2">
+                        <h4 class="font-bold text-blue-800 mb-2 flex items-center gap-2"><i class="ph-fill ph-book-open text-lg"></i> Bí kíp phân loại:</h4>
+                        <ul class="text-blue-900/80 space-y-2 text-xs">
+                            <li><strong class="text-blue-900">Sói:</strong> Ánh mắt sắc lạnh, hoang dã.</li>
+                            <li><strong class="text-blue-900">Husky:</strong> Mặt thân thiện, ngáo ngơ, hay lè lưỡi.</li>
+                            <li id="guide-other" class="hidden text-amber-700 pt-1 border-t border-blue-200/50"><strong class="text-amber-800">Động vật khác:</strong> Không giống Sói hay Husky? Thả vào đây!</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="w-full bg-white rounded-xl shadow-inner border border-slate-200 p-4 min-h-[14rem] flex flex-col items-center justify-center relative" id="draggable-items-container">
+                        <!-- Items injected via JS -->
+                        
+                        <!-- Tutorial Hand (Round 1) -->
+                        <div id="tutorial-hand" class="absolute z-50 text-6xl text-yellow-500 pointer-events-none hidden drop-shadow-2xl" style="top: 30%; left: 30%;">
+                            <i class="ph-fill ph-hand-pointing"></i>
+                            <div class="absolute -top-12 -left-20 bg-blue-600 text-white text-sm font-bold p-2 rounded-lg whitespace-nowrap shadow-xl">
+                                Kéo thả ảnh này!
+                                <div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-600 rotate-45"></div>
+                            </div>
+                        </div>
+
+                        <!-- Tutorial Popup (Round 2) -->
+                        <div id="tutorial-other" class="absolute z-50 right-[-10px] translate-x-full top-1/2 -translate-y-1/2 w-64 bg-amber-500 text-white font-bold p-4 rounded-xl shadow-2xl hidden pointer-events-none">
+                            Thỉnh thoảng sẽ có vài bạn nhỏ đi lạc, hãy kéo chúng sang ô "Động Vật Khác" nhé!
+                            <div class="absolute top-1/2 -left-2 -translate-y-1/2 w-6 h-6 bg-amber-500 rotate-45"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Simulated Coding Console -->
+                    <div class="w-full bg-slate-900 rounded-xl p-3 border border-slate-700 shadow-inner h-24 overflow-hidden flex flex-col relative mt-2">
+                       <div class="text-teal-500 font-mono text-xs mb-1 border-b border-slate-700 pb-1 flex justify-between">
+                           <span>> SYSTEM.ENCODE()</span>
+                           <span class="animate-pulse">_</span>
+                       </div>
+                       <div id="coding-console-text" class="text-teal-400/80 font-mono text-[0.65rem] leading-tight break-all overflow-hidden flex-1">
+                           // Hệ thống sẵn sàng...
+                       </div>
+                    </div>
+
+                    <button id="btn-save-item" class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl text-lg hover:bg-blue-700 transition-all shadow-lg scale-0 opacity-0 pointer-events-none mt-2 flex items-center justify-center gap-2">
+                        <i class="ph-bold ph-floppy-disk"></i> Lưu & Mã hóa
+                    </button>
+                </div>
+
+                <!-- Dropzone: Wolf -->
+                <div class="flex-1 bg-slate-100/50 rounded-[2rem] border-2 border-dashed border-slate-300 flex flex-col p-6 transition-all duration-300" id="dropzone-wolf">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-700">
+                            <i class="ph-fill ph-moon-stars text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-800">Chó Sói</h3>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 gap-4 auto-rows-max items-start content-start" id="wolf-container">
+                        <!-- Dropped items go here -->
+                    </div>
+                </div>
+
+                <!-- Dropzone: Other (Appears in Round 2) -->
+                <div class="flex-1 bg-amber-50/50 rounded-[2rem] border-2 border-dashed border-amber-200 flex flex-col p-6 transition-all duration-300 hidden" id="dropzone-other">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600">
+                            <i class="ph-fill ph-paw-print text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-amber-900">Động Vật Khác</h3>
+                    </div>
+                    <div class="flex-1 grid grid-cols-1 gap-4 auto-rows-max items-start content-start" id="other-container">
+                        <!-- Dropped items go here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATE 3: AI Testing Auto-Run -->
+        <section id="state-3" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Kiểm Tra AI Tự Động</h2>
+                <p class="text-slate-500 font-medium">Hệ thống đang tự động phân loại dữ liệu thực tế dựa trên những gì đã học...</p>
+            </div>
+            
+            <div class="flex-1 flex flex-col items-center justify-center relative min-h-0">
+                <!-- Scanner UI -->
+                <div class="w-full max-w-3xl relative h-64 bg-slate-50 rounded-[2rem] border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center">
+                    
+                    <!-- Scanner Laser -->
+                    <div id="ai-scanner-laser" class="absolute top-0 bottom-0 left-0 w-2 bg-teal-400 shadow-[0_0_20px_5px_rgba(45,212,191,0.5)] z-20 hidden"></div>
+                    
+                    <!-- Current Item Being Scanned -->
+                    <div id="ai-current-item" class="relative z-10 w-64 h-64 md:w-72 md:h-72 rounded-2xl bg-white shadow-2xl border-4 border-transparent overflow-hidden transform transition-all duration-500 scale-0 opacity-0 flex-shrink-0 flex flex-col">
+                        <img src="" alt="Test image" class="w-full h-full object-cover">
+                        <div id="ai-prediction-badge" class="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full font-bold text-base shadow-lg whitespace-nowrap hidden text-white"></div>
+                    </div>
+                    
+                    <!-- Global Error Overlay -->
+                    <div id="ai-error-overlay" class="absolute inset-0 bg-red-500/20 hidden z-30 pointer-events-none"></div>
+                </div>
+                
+                <!-- Progress & Console -->
+                <div class="w-full max-w-xl mt-6 flex flex-col gap-2">
+                    <div class="w-full bg-slate-200 rounded-full h-4 mb-2 overflow-hidden shadow-inner relative">
+                        <div id="ai-progress-bar" class="bg-teal-500 h-4 rounded-full transition-all duration-300 w-0"></div>
+                        <span id="ai-progress-text" class="absolute inset-0 flex items-center justify-center text-[0.65rem] font-bold text-slate-700">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-xl p-3 border border-slate-700 shadow-inner h-24 overflow-hidden flex flex-col relative">
+                        <div class="text-teal-500 font-mono text-xs mb-1 border-b border-slate-700 pb-1 flex justify-between">
+                            <span>> SYSTEM.ANALYZE()</span>
+                            <span class="animate-pulse">_</span>
+                        </div>
+                        <div id="ai-console-text" class="text-teal-400/80 font-mono text-[0.65rem] leading-tight break-all overflow-hidden flex-1">
+                            // Đang nạp dữ liệu...
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between w-full max-w-3xl mt-6">
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2"><i class="ph-fill ph-dog text-2xl"></i></div>
+                        <div class="font-bold text-blue-900"><span id="ai-count-husky">0</span> Husky</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-16 h-16 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-2"><i class="ph-fill ph-moon-stars text-2xl"></i></div>
+                        <div class="font-bold text-slate-800"><span id="ai-count-wolf">0</span> Sói</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATE 4: Breaking News & Chat -->
+        <section id="state-4" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full w-full max-w-5xl mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Hậu quả không ngờ tới...</h2>
+                <p class="text-slate-500 font-medium">Hệ thống AI đã tự động phân loại và thả các cá thể về tự nhiên. Nhưng sau vài tuần, tin tức bắt đầu lan truyền.</p>
+            </div>
+            
+            <div class="flex-1 flex flex-col md:flex-row gap-8 items-stretch justify-center">
+                <!-- Article 1 -->
+                <div id="article-1" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform -rotate-1 hover:rotate-0 transition-all duration-700 cursor-pointer scale-0 opacity-0">
+                    <div class="border-b-4 border-slate-900 pb-2 mb-4">
+                        <h1 class="font-serif text-3xl font-black text-slate-900 leading-tight">Nhiều người bắt gặp loài Husky xuất hiện trong rừng</h1>
+                        <p class="text-sm font-bold text-slate-500 mt-2">Báo Cập Nhật Hằng Ngày • 15/10</p>
+                    </div>
+                    <img src="12.jpg" alt="Husky trong rừng" class="w-full h-64 object-cover grayscale mb-4 border border-slate-300 rounded-lg">
+                    <p class="text-slate-700 font-serif leading-relaxed text-sm md:text-base text-justify">
+                        Theo báo cáo từ kiểm lâm khu vực, gần đây có rất nhiều người dân đi hái nấm báo cáo về việc họ bắt gặp những chú chó Husky đi lang thang sâu trong rừng rậm. Điều này rất kỳ lạ vì loài chó nhà này hiếm khi xuất hiện ở môi trường hoang dã hẻo lánh như vậy.
+                    </p>
+                </div>
+                
+                <!-- Article 2 -->
+                <div id="article-2" class="flex-1 bg-white rounded-xl p-6 flex flex-col shadow-xl border border-slate-200 transform rotate-1 hover:rotate-0 transition-all duration-700 cursor-pointer scale-0 opacity-0">
+                    <div class="border-b-4 border-red-700 pb-2 mb-4">
+                        <h1 class="font-serif text-3xl font-black text-slate-900 leading-tight">Husky xuất hiện trong rừng ngày càng nhiều, nghi vấn đang hướng về phía Trung tâm bảo tồn</h1>
+                        <p class="text-sm font-bold text-slate-500 mt-2">Tạp Chí Thiên Nhiên • 16/10</p>
+                    </div>
+                    <p class="text-slate-700 font-serif leading-relaxed text-sm md:text-base text-justify mb-4">
+                        Sự gia tăng bất thường của cá thể Husky trong rừng tự nhiên làm dấy lên nhiều nghi ngờ. Các chuyên gia sinh thái học cho rằng có thể có một sự nhầm lẫn nghiêm trọng trong quy trình phân loại và thả thú về tự nhiên gần đây.
+                    </p>
+                    <div class="bg-red-50 border-l-4 border-red-500 p-4 mt-auto">
+                        <p class="font-bold text-red-800 mb-1">Cảnh báo từ chuyên gia:</p>
+                        <p class="text-red-700 text-sm">"Nếu hệ thống AI tự động của chúng ta nhầm lẫn Husky thành Sói hoang dã, điều đó đồng nghĩa với việc chúng ta đang đẩy loài chó nhà vào môi trường khắc nghiệt mà chúng không thể sinh tồn!"</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-center">
+                <button id="btn-next-lime" class="px-8 py-4 bg-teal-600 text-white font-bold rounded-2xl text-lg hover:bg-teal-700 transition-all shadow-lg hover:shadow-xl">
+                    Khám phá nguyên nhân sai lầm của AI
+                </button>
+            </div>
+        </section>
+
+        <!-- STATE 5: Interactive LIME X-Ray -->
+        <section id="state-5" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-slate-800 mb-2">Thấu Kính AI (LIME X-Ray)</h2>
+                <p class="text-slate-500 font-medium">Kéo thanh trượt để xem chính xác AI đang nhìn vào đâu khi đưa ra quyết định.</p>
+            </div>
+            
+            <div class="flex-1 flex flex-col md:flex-row gap-8 min-h-0 items-center justify-center w-full">
+                <!-- Interactive Viewer -->
+                <div class="relative w-full max-w-xl aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl border-4 border-slate-900 group shrink-0">
+                    <!-- Original Image -->
+                    <img id="lime-base-img" src="" alt="Base" class="absolute inset-0 w-full h-full object-cover">
+                    
+                    <!-- LIME Overlay Heatmap (Darkens everything else except snow) -->
+                    <div id="lime-heatmap" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 mix-blend-multiply bg-black" style="mask-image: radial-gradient(circle at 50% 80%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%); -webkit-mask-image: radial-gradient(circle at 50% 80%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%);">
+                    </div>
+                    
+                    <div id="lime-focus-box" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 flex items-end justify-center pb-[10%]">
+                         <div class="border-2 border-red-500 rounded bg-red-500/20 w-[80%] h-[40%] flex items-start justify-end p-2 relative shadow-[0_0_15px_rgba(239,68,68,0.5)]">
+                             <div class="bg-black/80 text-red-400 font-mono text-xs px-2 py-1 rounded absolute -top-3 -right-3 animate-pulse border border-red-500">Focus: Bối cảnh tuyết</div>
+                         </div>
+                    </div>
+
+                    
+                    <!-- Slider Handle -->
+                    <div class="absolute inset-x-8 bottom-8 bg-white/90 backdrop-blur rounded-full p-4 shadow-2xl border border-slate-200 z-20 flex items-center gap-4">
+                        <i class="ph-fill ph-eye-slash text-slate-400 text-xl"></i>
+                        <input type="range" id="lime-slider" min="0" max="100" value="0" class="w-full appearance-none h-2 bg-slate-200 rounded-full outline-none focus:ring-2 focus:ring-teal-500 custom-range">
+                        <i class="ph-fill ph-eye text-teal-600 text-xl"></i>
+                    </div>
+                </div>
+                
+                <!-- Conclusion Panel -->
+                <div class="w-full max-w-sm bg-blue-50 border border-blue-100 p-6 lg:p-8 rounded-[2rem] text-left transform transition-all duration-500 opacity-0 translate-x-8" id="lime-conclusion">
+                    <div class="w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-blue-500/30">
+                        <i class="ph-fill ph-lightbulb text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-4">Sự Thật Phơi Bày</h3>
+                    <p class="text-slate-600 leading-relaxed mb-6 font-medium text-sm lg:text-base">
+                        Khi AI tự phân loại, nó không nhận ra vật thể mà chú ý vào <strong class="text-red-500">nền trắng của vùng tuyết</strong>. Do đó Husky trên tuyết đã bị nhầm thành Sói và bị thả nhầm vào rừng!
+                    </p>
+                    <button id="btn-show-meaning" class="w-full py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all flex items-center justify-center gap-2 mb-3 shadow-lg">
+                        <i class="ph-fill ph-book-open"></i>
+                        Ý nghĩa đằng sau
+                    </button>
+                    <button id="btn-restart" class="w-full py-3 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all flex items-center justify-center gap-2 opacity-50 pointer-events-none transition-opacity duration-300">
+                        <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                        Trải nghiệm lại
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Next Button Floating (For States 1 & 2) -->
+        <button id="btn-next-stage" class="absolute bottom-6 right-6 lg:bottom-10 lg:right-10 px-6 py-3 bg-teal-500 text-white font-bold rounded-xl shadow-lg hover:bg-teal-600 hover:shadow-xl transition-all scale-0 opacity-0 flex items-center gap-2 z-50">
+            <span>Tiếp tục</span>
+            <i class="ph-bold ph-arrow-right"></i>
+        </button>
+
+    <!-- Warning Modal for 'Other' items -->
+    <div id="warning-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full transform scale-95 transition-transform duration-300 flex flex-col items-center text-center" id="warning-modal-content">
+            <div class="w-20 h-20 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-4xl mb-6 shadow-inner">
+                <i class="ph-fill ph-warning-circle"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-800 mb-4">Chú ý!</h3>
+            <p class="text-slate-600 font-medium mb-8">Thỉnh thoảng sẽ có một vài bạn thú khác lạc vào đây, nên bạn hãy đưa sang ô <strong class="text-amber-600">"Động vật khác"</strong> nhé!</p>
+            <button id="btn-warning-close" class="w-full py-4 bg-amber-500 text-white font-bold rounded-xl text-lg hover:bg-amber-600 transition-all shadow-lg hover:shadow-xl">
+                Đã hiểu
+            </button>
+        </div>
+    </div>
+
+    <!-- True Meaning Modal -->
+    <div id="true-meaning-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] shadow-2xl p-8 max-w-4xl w-full transform scale-95 transition-transform duration-300 flex flex-col relative max-h-[90vh] overflow-y-auto" id="true-meaning-content">
+            <h2 class="text-3xl font-black text-slate-800 mb-6 flex items-center justify-center gap-3">
+                <i class="ph-fill ph-detective text-blue-600"></i> Ý nghĩa thực sự của trò chơi
+            </h2>
+            <p class="text-slate-600 mb-8 text-lg font-medium text-center">
+                Trò chơi này dựa trên một thí nghiệm khoa học có thật năm 2016. Mục đích là chứng minh: AI có thể đoán đúng rất nhiều lần, nhưng thực ra nó chỉ đang "học vẹt" dựa trên những chi tiết sai lệch. Các nhà khoa học đã chế tạo ra một "Kính hiển vi AI" (gọi là LIME) để nhìn thấu bí mật này.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Card 1 -->
+                <div class="bg-blue-50 rounded-2xl p-6 border border-blue-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="ph-fill ph-brain"></i></div>
+                    <h3 class="font-bold text-blue-900 mb-2">AI đạt điểm tuyệt đối... nhờ học vẹt</h3>
+                    <p class="text-sm text-blue-800/80">Khi làm bài kiểm tra, máy tính đoán đúng gần như 100% làm ai cũng nghĩ nó siêu thông minh. Nhưng thực ra, nó không hề nhìn vào khuôn mặt, tai hay răng của con vật.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-teal-50 rounded-2xl p-6 border border-teal-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="ph-fill ph-microscope"></i></div>
+                    <h3 class="font-bold text-teal-900 mb-2">Chiếc kính hiển vi vạch trần AI</h3>
+                    <p class="text-sm text-teal-800/80">Khi các nhà khoa học bật "Kính hiển vi LIME" để soi vào bộ não của AI, họ ngỡ ngàng phát hiện: AI chỉ nhìn chăm chằm vào phông nền tuyết trắng xung quanh!</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-amber-50 rounded-2xl p-6 border border-amber-100 flex flex-col items-center text-center">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-2xl mb-4"><i class="ph-fill ph-warning"></i></div>
+                    <h3 class="font-bold text-amber-900 mb-2">Bí mật bị bật mí (Thiên kiến dữ liệu)</h3>
+                    <p class="text-sm text-amber-800/80">Vì những bức ảnh chúng ta nạp cho AI lúc đầu: cứ Sói là ở vùng Tuyết, cứ Husky là ở sân nhà. AI đã tự lười biếng rút ra quy luật sai: Cứ có Tuyết = Chó Sói!</p>
+                </div>
+            </div>
+            <div class="flex justify-center mt-auto">
+                <button id="btn-close-meaning" class="px-10 py-4 bg-teal-600 text-white font-bold rounded-xl text-lg hover:bg-teal-700 transition-all shadow-lg hover:shadow-xl flex items-center gap-2">
+                    <i class="ph-bold ph-check-circle"></i> Đã Hiểu
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Error Modal -->
+    <div id="system-error-modal" class="fixed inset-0 bg-red-900/80 backdrop-blur-md z-[100] hidden flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full transform scale-95 transition-transform duration-300 flex flex-col items-center text-center" id="system-error-content">
+            <div class="w-24 h-24 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-5xl mb-6 shadow-inner animate-pulse">
+                <i class="ph-fill ph-x-circle"></i>
+            </div>
+            <h3 class="text-3xl font-black text-slate-800 mb-4">LỖI HỆ THỐNG</h3>
+            <p id="system-error-text" class="text-red-600 font-bold text-lg mb-8"></p>
+            <button id="btn-system-error-restart" class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl text-lg hover:bg-slate-800 transition-all shadow-lg hover:shadow-xl flex justify-center items-center gap-2">
+                <i class="ph-bold ph-arrow-counter-clockwise"></i> Làm lại từ đầu
+            </button>
+        </div>
+    </div>
+
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
