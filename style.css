@@ -174,3 +174,50 @@
 .animate-core-pulse {
     animation: core-pulse 1.5s infinite ease-in-out;
 }
+
+/* CRT Screen Effect */
+.crt-overlay {
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* Screen Shake for Errors */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px) rotate(-1deg); }
+    20%, 40%, 60%, 80% { transform: translateX(5px) rotate(1deg); }
+}
+.animate-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+/* Cinematic Transitions */
+.cinematic-fade-overlay {
+    position: fixed;
+    inset: 0;
+    background: black;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cinematic-fade-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+.cinematic-text {
+    color: white;
+    font-family: "Space Mono", monospace;
+    font-size: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 1s ease-in-out 0.5s;
+}
+.cinematic-fade-overlay.active .cinematic-text {
+    opacity: 1;
+    transform: translateY(0);
+}

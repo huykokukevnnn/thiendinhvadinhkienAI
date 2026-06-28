@@ -1,3 +1,41 @@
+// --- Audio System (Web Audio API) ---
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTone(freq, type, duration, vol) {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + duration);
+}
+
+const SFX = {
+    type: () => playTone(600 + Math.random()*200, 'square', 0.05, 0.02),
+    blip: () => playTone(800, 'sine', 0.1, 0.05),
+    warp: () => playTone(300, 'triangle', 0.4, 0.1),
+    error: () => playTone(150, 'sawtooth', 0.5, 0.1),
+    siren: () => {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.5);
+        osc.frequency.linearRampToValueAtTime(400, audioCtx.currentTime + 1);
+        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 1);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1);
+    }
+};
+
 // State Tracking Object (As requested)
 const gameEngine = {
     currentState: 0,
@@ -55,8 +93,52 @@ function showState(id, updateProgress = true) {
     }
 }
 
-// --- STATE 0: Welcome ---
-document.getElementById('btn-start').addEventListener('click', () => {
+// --- STATE 0: Welcome (Dialogue System) ---
+const dialogueLines = [
+    "Xin chào! Trung tâm cứu hộ vừa nhận được một lứa động vật mới.",
+    "Trong đó, có rất nhiều chó Sói hoang dã và chó Husky nhà đang bị trộn lẫn với nhau.",
+    "Chúng ta không thể phân loại bằng tay vì số lượng quá lớn.",
+    "Bạn hãy giúp tôi huấn luyện Hệ thống AI Phân loại tự động nhé!",
+    "Sau khi phân loại, chó Sói sẽ được thả thẳng về rừng tự nhiên, còn Husky sẽ được đem đi nhận nuôi."
+];
+let currentDialogueIdx = 0;
+let isTyping = false;
+const dialogueEl = document.getElementById('dialogue-text');
+const btnNextDialogue = document.getElementById('btn-next-dialogue');
+const btnStart = document.getElementById('btn-start');
+
+async function typeWriter(text, element) {
+    isTyping = true;
+    element.innerHTML = '';
+    for (let i = 0; i < text.length; i++) {
+        element.innerHTML += text.charAt(i);
+        if (i % 2 === 0) SFX.type();
+        await new Promise(r => setTimeout(r, 30));
+    }
+    isTyping = false;
+}
+
+function advanceDialogue() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    if (isTyping) return; // Prevent skipping for now to ensure animation finishes
+    
+    if (currentDialogueIdx < dialogueLines.length) {
+        typeWriter(dialogueLines[currentDialogueIdx], dialogueEl);
+        currentDialogueIdx++;
+        
+        if (currentDialogueIdx === dialogueLines.length) {
+            btnNextDialogue.classList.add('hidden');
+            setTimeout(() => btnStart.classList.remove('hidden'), 500);
+        }
+    }
+}
+
+btnNextDialogue.addEventListener('click', advanceDialogue);
+// Initialize first dialogue automatically
+setTimeout(advanceDialogue, 500);
+
+btnStart.addEventListener('click', () => {
+    SFX.blip();
     gameEngine.currentState = 1;
     setupTrainingRound(1);
     showState(1);
@@ -540,46 +622,111 @@ async function startAutoRun() {
     if (progressText) progressText.textContent = '100%';
     clearInterval(binaryInterval);
     if (consoleText) consoleText.textContent = "// Hoàn tất phân tích dữ liệu.";
-    if (aiCoreIcon) aiCoreIcon.classList.remove('animate-core-pulse');
-
-    // Set data for LIME (State 5) using the misclassified image
-    document.getElementById('lime-base-img').src = "11.jpg";
-
+    
     // Auto transition to State 4 after all tests complete successfully
     await delay(1000);
+    
+    // --- Cinematic Transition ---
+    const overlay = document.createElement('div');
+    overlay.className = 'cinematic-fade-overlay';
+    overlay.innerHTML = '<div class="cinematic-text">2 Tuần Sau...</div>';
+    document.body.appendChild(overlay);
+    
+    // Trigger fade in
+    setTimeout(() => overlay.classList.add('active'), 100);
+    SFX.warp();
+    
+    await delay(3000);
+    
     gameEngine.currentState = 4;
     showState(4);
+    
+    // Fade out overlay
+    overlay.classList.remove('active');
+    setTimeout(() => overlay.remove(), 1500);
+    
     showNewsSequence();
 }
 
 
-// --- STATE 4: News Sequence ---
+// --- STATE 4: News Sequence & Trust Meter ---
 async function showNewsSequence() {
     const btnLime = document.getElementById('btn-next-lime');
     const article1 = document.getElementById('article-1');
     const article2 = document.getElementById('article-2');
     
-    btnLime.classList.add('hidden', 'opacity-0', 'pointer-events-none');
-    if(article1) article1.classList.add('scale-0', 'opacity-0');
-    if(article2) article2.classList.add('scale-0', 'opacity-0');
+    const trustBar = document.getElementById('trust-bar');
+    const trustPercentage = document.getElementById('trust-percentage');
+    const trustWarning = document.getElementById('trust-warning');
     
-    // Article 1 appears after 2 seconds
-    setTimeout(() => {
-        if(article1) article1.classList.remove('scale-0', 'opacity-0');
-    }, 2000);
+    // Reset states
+    if (article1) {
+        article1.classList.remove('scale-100', 'opacity-100');
+        article1.classList.add('scale-0', 'opacity-0');
+    }
+    if (article2) {
+        article2.classList.remove('scale-100', 'opacity-100');
+        article2.classList.add('scale-0', 'opacity-0');
+    }
+    if (btnLime) btnLime.classList.add('hidden');
     
-    // Article 2 appears after 4 more seconds (6s total)
-    setTimeout(() => {
-        if(article2) article2.classList.remove('scale-0', 'opacity-0');
-    }, 6000);
+    if (trustBar) {
+        trustBar.style.width = '100%';
+        trustBar.classList.remove('from-red-700', 'animate-pulse');
+        trustBar.classList.add('from-red-500');
+    }
+    if (trustPercentage) {
+        trustPercentage.textContent = '100%';
+        trustPercentage.classList.remove('text-red-500');
+    }
+    if (trustWarning) trustWarning.classList.remove('opacity-100');
     
-    // Show the button after Article 2
-    setTimeout(() => {
-        btnLime.classList.remove('hidden');
-        setTimeout(() => {
-            btnLime.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
-        }, 50);
-    }, 8000);
+    // Show first article after 2s
+    await delay(2000);
+    if (article1) {
+        article1.classList.remove('scale-0', 'opacity-0');
+        article1.classList.add('scale-100', 'opacity-100');
+    }
+    if (typeof SFX !== 'undefined') SFX.error();
+    
+    // Drop trust to 50%
+    if (trustBar) trustBar.style.width = '50%';
+    if (trustPercentage) trustPercentage.textContent = '50%';
+    document.body.classList.add('animate-shake');
+    setTimeout(() => document.body.classList.remove('animate-shake'), 500);
+    
+    // Show second article after 4s (total 6s from start)
+    await delay(4000);
+    if (article2) {
+        article2.classList.remove('scale-0', 'opacity-0');
+        article2.classList.add('scale-100', 'opacity-100');
+    }
+    if (typeof SFX !== 'undefined') {
+        SFX.error();
+        SFX.siren();
+    }
+    
+    // Drop trust to CRITICAL
+    if (trustBar) {
+        trustBar.style.width = '10%';
+        trustBar.classList.replace('from-red-500', 'from-red-700');
+        trustBar.classList.add('animate-pulse');
+    }
+    if (trustPercentage) {
+        trustPercentage.textContent = '10%';
+        trustPercentage.classList.add('text-red-500');
+    }
+    if (trustWarning) trustWarning.classList.add('opacity-100');
+    
+    document.body.classList.add('animate-shake');
+    setTimeout(() => document.body.classList.remove('animate-shake'), 500);
+    
+    // Show LIME button
+    await delay(1000);
+    if (btnLime) {
+        btnLime.classList.remove('hidden', 'opacity-0', 'pointer-events-none');
+        btnLime.classList.add('animate-bounce');
+    }
 }
 
 document.getElementById('btn-next-lime').addEventListener('click', () => {

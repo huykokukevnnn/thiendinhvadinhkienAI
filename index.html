@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,6 +18,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['"Be Vietnam Pro"', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'],
                     },
                     colors: {
                         agency: {
@@ -39,7 +40,10 @@
     <!-- Phosphor Icons (Modern & Clean) -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
-<body class="bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 text-slate-800 min-h-screen w-full flex items-center justify-center overflow-hidden font-sans antialiased selection:bg-teal-200 m-0 p-0">
+<body class="bg-gradient-to-br from-teal-50 via-blue-50 to-emerald-50 text-slate-800 min-h-screen w-full flex items-center justify-center overflow-hidden font-sans antialiased selection:bg-teal-200 m-0 p-0 relative">
+    
+    <!-- CRT Overlay -->
+    <div class="crt-overlay pointer-events-none fixed inset-0 z-[999] opacity-20"></div>
 
     <!-- Core Card Wrapper -->
     <main id="app-container" class="w-full h-full min-h-screen bg-white/95 backdrop-blur-md transition-all duration-500 ease-in-out flex flex-col relative overflow-hidden flex-1 p-6 lg:p-10">
@@ -61,19 +65,31 @@
             </div>
         </header>
 
-        <!-- STATE 0: Welcome Dashboard -->
-        <section id="state-0" class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in state-container">
-            <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center mb-6 shadow-inner">
+        <!-- STATE 0: Welcome Dashboard (Dialogue RPG Style) -->
+        <section id="state-0" class="flex-1 flex flex-col items-center justify-center text-center animate-fade-in state-container relative">
+            <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(45,212,191,0.5)]">
                 <i class="ph-duotone ph-paw-print text-5xl text-teal-600 animate-bounce-slow"></i>
             </div>
-            <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-800 mb-6 tracking-tight">Chiến Dịch Giải Cứu Động Vật</h2>
-            <p class="text-lg text-slate-600 max-w-2xl mb-10 leading-relaxed">
-                Trung tâm bảo tồn động vật đã thu nhận thêm rất nhiều cá thể động vật trong đó <strong class="text-slate-700">chó Sói</strong> và <strong class="text-blue-600">chó Husky</strong> đang bị nhầm lẫn. Chúng ta không thể phân loại chúng một cách thủ công được. Vì vậy bạn hãy lập trình ra một Hệ thống phân loại thông minh để tiết kiệm công sức và thời gian. Các cá thể chó Sói sẽ được thả về tự nhiên.
-            </p>
-            <button id="btn-start" class="group relative px-8 py-4 bg-slate-900 text-white font-bold rounded-2xl text-lg hover:bg-slate-800 transition-all active:scale-95 shadow-xl hover:shadow-2xl flex items-center gap-3 overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-teal-500 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span class="relative z-10">Bắt đầu Huấn Luyện</span>
-                <i class="ph-bold ph-arrow-right relative z-10 group-hover:translate-x-1 transition-transform"></i>
+            <h2 class="text-4xl lg:text-5xl font-extrabold text-slate-800 mb-8 tracking-tight font-mono">HỆ THỐNG GIẢI CỨU ĐỘNG VẬT</h2>
+            
+            <!-- Dialogue Box -->
+            <div class="w-full max-w-3xl bg-slate-900 rounded-2xl border-4 border-slate-700 p-6 flex flex-col items-start text-left shadow-2xl relative mt-4 h-48">
+                <!-- Speaker Name -->
+                <div class="absolute -top-5 left-6 bg-teal-500 text-white px-4 py-1 rounded font-bold uppercase tracking-widest text-sm shadow-md border-2 border-teal-700">
+                    Trạm Trưởng
+                </div>
+                
+                <p id="dialogue-text" class="text-teal-400 font-mono text-lg leading-relaxed h-full overflow-hidden w-full"></p>
+                
+                <!-- Next dialogue button -->
+                <button id="btn-next-dialogue" class="absolute bottom-4 right-6 text-teal-300 hover:text-white font-mono animate-pulse flex items-center gap-2">
+                    [Tiếp tục] <i class="ph-fill ph-caret-down"></i>
+                </button>
+            </div>
+            
+            <!-- Hidden Start Button, shown after dialogue ends -->
+            <button id="btn-start" class="hidden mt-8 group relative px-8 py-4 bg-teal-600 text-white font-bold rounded-xl text-lg hover:bg-teal-500 transition-all active:scale-95 shadow-[0_0_20px_rgba(13,148,136,0.6)] flex items-center gap-3 overflow-hidden font-mono uppercase tracking-wider">
+                <span class="relative z-10">> BẮT ĐẦU HUẤN LUYỆN</span>
             </button>
         </section>
 
@@ -263,8 +279,24 @@
 
         <!-- STATE 4: Breaking News & Chat -->
         <section id="state-4" class="hidden flex-1 flex flex-col animate-fade-in state-container h-full w-full max-w-5xl mx-auto">
+            
+            <!-- Public Trust Meter -->
+            <div class="w-full max-w-md mx-auto mb-8 bg-slate-900 p-4 rounded-xl shadow-xl border border-slate-700 relative overflow-hidden">
+                <div class="flex justify-between items-end mb-2 font-mono">
+                    <span class="text-teal-400 text-xs font-bold uppercase tracking-wider"><i class="ph-fill ph-heartbeat"></i> Niềm tin công chúng</span>
+                    <span id="trust-percentage" class="text-teal-400 font-bold text-sm">100%</span>
+                </div>
+                <div class="w-full h-4 bg-slate-800 rounded-full overflow-hidden shadow-inner border border-slate-700 relative">
+                    <div id="trust-bar" class="h-full bg-gradient-to-r from-red-500 via-amber-400 to-teal-500 w-full transition-all duration-1000 ease-in-out shadow-[0_0_10px_rgba(20,184,166,0.5)]"></div>
+                </div>
+                <!-- Warning Text -->
+                <div id="trust-warning" class="absolute inset-0 bg-red-600/90 flex items-center justify-center font-bold text-white uppercase tracking-widest text-sm opacity-0 pointer-events-none transition-opacity duration-300">
+                    <i class="ph-fill ph-warning-octagon mr-2 text-xl"></i> KHỦNG HOẢNG TRUYỀN THÔNG!
+                </div>
+            </div>
+
             <div class="text-center mb-8">
-                <h2 class="text-3xl font-bold text-slate-800 mb-2">Hậu quả không ngờ tới...</h2>
+                <h2 class="text-3xl font-bold text-slate-800 mb-2 font-mono">Hậu quả không ngờ tới...</h2>
                 <p class="text-slate-500 font-medium">Hệ thống AI đã tự động phân loại và thả các cá thể về tự nhiên. Nhưng sau vài tuần, tin tức bắt đầu lan truyền.</p>
             </div>
             
