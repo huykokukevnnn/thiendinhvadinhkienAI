@@ -94,7 +94,7 @@
                     <div class="w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10 relative">
                         <i class="ph-fill ph-house text-5xl"></i>
                     </div>
-                    <h3 class="text-3xl font-black text-blue-900 z-10 mb-2 drop-shadow-md text-center">Ngôi Nhà Tuyết</h3>
+                    <h3 class="text-3xl font-black text-blue-900 z-10 mb-2 drop-shadow-md text-center">Ngôi Nhà</h3>
                     <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-blue-800 z-10 shadow-sm border border-blue-200 flex items-center">
                         Đã cứu: <span id="husky-counter" class="text-2xl ml-2 text-blue-600">0</span>
                     </div>
@@ -189,59 +189,73 @@
                 <p class="text-slate-500 font-medium">Hệ thống đang tự động phân loại dữ liệu thực tế dựa trên những gì đã học...</p>
             </div>
             
-            <div class="flex-1 flex flex-col items-center justify-center relative min-h-0">
-                <!-- Scanner UI -->
-                <div class="w-full max-w-3xl relative h-64 bg-slate-50 rounded-[2rem] border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center">
-                    
-                    <!-- Scanner Laser -->
-                    <div id="ai-scanner-laser" class="absolute top-0 bottom-0 left-0 w-2 bg-teal-400 shadow-[0_0_20px_5px_rgba(45,212,191,0.5)] z-20 hidden"></div>
-                    
-                    <!-- Current Item Being Scanned -->
-                    <div id="ai-current-item" class="relative z-10 w-64 h-64 md:w-72 md:h-72 rounded-2xl bg-white shadow-2xl border-4 border-transparent overflow-hidden transform transition-all duration-500 scale-0 opacity-0 flex-shrink-0 flex flex-col">
-                        <img src="" alt="Test image" class="w-full h-full object-cover">
-                        <div id="ai-prediction-badge" class="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full font-bold text-base shadow-lg whitespace-nowrap hidden text-white"></div>
+            <div class="flex-1 flex flex-col lg:flex-row gap-6 min-h-0 w-full">
+                <!-- Dropzone: Husky (AI) -->
+                <div class="flex-1 bg-gradient-to-b from-blue-50 to-blue-100 rounded-[2rem] border-4 border-blue-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+                        <i class="ph-fill ph-house text-[15rem] text-blue-900"></i>
                     </div>
-                    
-                    <!-- Global Error Overlay -->
-                    <div id="ai-error-overlay" class="absolute inset-0 bg-red-500/20 hidden z-30 pointer-events-none"></div>
-                </div>
-                
-                <!-- Progress & Console -->
-                <div class="w-full max-w-xl mt-6 flex flex-col gap-3">
-                    <div class="flex items-center gap-4 bg-slate-900 p-4 rounded-2xl shadow-inner border border-slate-700 relative overflow-hidden">
-                        <div class="absolute inset-0 bg-teal-500/10 pointer-events-none"></div>
-                        <div id="ai-core-icon" class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-2xl z-10 transition-all duration-300">
-                            <i class="ph-fill ph-cpu"></i>
-                        </div>
-                        <div class="flex-1 z-10">
-                            <div class="flex justify-between text-teal-400 text-xs font-mono mb-1 font-bold">
-                                <span>AI CORE CHARGING...</span>
-                                <span id="ai-progress-text">0%</span>
-                            </div>
-                            <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner border border-slate-700">
-                                <div id="ai-progress-bar" class="bg-teal-500 h-full rounded-full transition-all duration-300 w-0 shadow-[0_0_10px_rgba(20,184,166,0.8)]"></div>
-                            </div>
-                        </div>
+                    <div class="w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(59,130,246,0.5)] z-10 relative">
+                        <i class="ph-fill ph-house text-5xl"></i>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-xl p-3 border border-slate-700 shadow-inner h-24 overflow-hidden flex flex-col relative">
-                        <div class="text-teal-500 font-mono text-xs mb-1 border-b border-slate-700 pb-1 flex justify-between">
-                            <span>> SYSTEM.ANALYZE()</span>
-                            <span class="animate-pulse">_</span>
-                        </div>
-                        <div id="ai-console-text" class="text-teal-400/80 font-mono text-[0.65rem] leading-tight break-all overflow-hidden flex-1">
-                            // Đang nạp dữ liệu...
-                        </div>
+                    <h3 class="text-3xl font-black text-blue-900 z-10 mb-2 drop-shadow-md text-center">Ngôi Nhà</h3>
+                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-blue-800 z-10 shadow-sm border border-blue-200 flex items-center">
+                        AI đã cứu: <span id="ai-count-husky" class="text-2xl ml-2 text-blue-600">0</span>
                     </div>
                 </div>
-                
-                <div class="flex justify-between w-full max-w-3xl mt-6">
-                    <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-2"><i class="ph-fill ph-dog text-2xl"></i></div>
-                        <div class="font-bold text-blue-900"><span id="ai-count-husky">0</span> Husky</div>
+
+                <!-- AI Central Scanner -->
+                <div class="w-full lg:w-[40%] flex flex-col items-center justify-center relative min-h-0">
+                    <!-- Scanner UI -->
+                    <div class="w-full relative h-64 bg-slate-50 rounded-[2rem] border border-slate-200 shadow-inner overflow-hidden flex items-center justify-center">
+                        <div id="ai-scanner-laser" class="absolute top-0 bottom-0 left-0 w-2 bg-teal-400 shadow-[0_0_20px_5px_rgba(45,212,191,0.5)] z-20 hidden"></div>
+                        <div id="ai-current-item" class="relative z-10 w-48 h-48 rounded-2xl bg-white shadow-2xl border-4 border-transparent overflow-hidden transform transition-all duration-500 scale-0 opacity-0 flex-shrink-0 flex flex-col">
+                            <img src="" alt="Test image" class="w-full h-full object-cover">
+                            <div id="ai-prediction-badge" class="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full font-bold text-base shadow-lg whitespace-nowrap hidden text-white"></div>
+                        </div>
+                        <div id="ai-error-overlay" class="absolute inset-0 bg-red-500/20 hidden z-30 pointer-events-none"></div>
                     </div>
-                    <div class="flex flex-col items-center">
-                        <div class="w-16 h-16 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center mb-2"><i class="ph-fill ph-moon-stars text-2xl"></i></div>
-                        <div class="font-bold text-slate-800"><span id="ai-count-wolf">0</span> Sói</div>
+                    
+                    <!-- Progress & Console -->
+                    <div class="w-full mt-4 flex flex-col gap-3">
+                        <div class="flex items-center gap-4 bg-slate-900 p-4 rounded-2xl shadow-inner border border-slate-700 relative overflow-hidden">
+                            <div class="absolute inset-0 bg-teal-500/10 pointer-events-none"></div>
+                            <div id="ai-core-icon" class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-2xl z-10 transition-all duration-300">
+                                <i class="ph-fill ph-cpu"></i>
+                            </div>
+                            <div class="flex-1 z-10">
+                                <div class="flex justify-between text-teal-400 text-xs font-mono mb-1 font-bold">
+                                    <span>AI CORE CHARGING...</span>
+                                    <span id="ai-progress-text">0%</span>
+                                </div>
+                                <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden shadow-inner border border-slate-700">
+                                    <div id="ai-progress-bar" class="bg-teal-500 h-full rounded-full transition-all duration-300 w-0 shadow-[0_0_10px_rgba(20,184,166,0.8)]"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-xl p-3 border border-slate-700 shadow-inner h-24 overflow-hidden flex flex-col relative">
+                            <div class="text-teal-500 font-mono text-xs mb-1 border-b border-slate-700 pb-1 flex justify-between">
+                                <span>> SYSTEM.ANALYZE()</span>
+                                <span class="animate-pulse">_</span>
+                            </div>
+                            <div id="ai-console-text" class="text-teal-400/80 font-mono text-[0.65rem] leading-tight break-all overflow-hidden flex-1">
+                                // Đang nạp dữ liệu...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dropzone: Wolf (AI) -->
+                <div class="flex-1 bg-gradient-to-b from-emerald-50 to-emerald-100 rounded-[2rem] border-4 border-emerald-200 flex flex-col items-center justify-center p-6 transition-all duration-300 relative overflow-hidden shadow-inner">
+                    <div class="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
+                        <i class="ph-fill ph-tree-evergreen text-[15rem] text-emerald-900"></i>
+                    </div>
+                    <div class="w-24 h-24 rounded-full bg-emerald-600 text-white flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(5,150,105,0.5)] z-10 relative">
+                        <i class="ph-fill ph-tree-evergreen text-5xl"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-emerald-900 z-10 mb-2 drop-shadow-md text-center">Rừng Hoang Dã</h3>
+                    <div class="bg-white/80 backdrop-blur px-6 py-2 rounded-xl font-bold text-emerald-800 z-10 shadow-sm border border-emerald-200 flex items-center">
+                        AI đã thả: <span id="ai-count-wolf" class="text-2xl ml-2 text-emerald-600">0</span>
                     </div>
                 </div>
             </div>

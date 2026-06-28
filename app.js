@@ -519,10 +519,20 @@ async function startAutoRun() {
                 currentItemBox.classList.add('border-slate-400');
             }
             await delay(1000);
+            
+            // Move animation to respective side
+            if (data.type === 'Husky') {
+                currentItemBox.style.transform = "translateX(-150%) scale(0.2) rotate(-360deg)";
+            } else {
+                currentItemBox.style.transform = "translateX(150%) scale(0.2) rotate(360deg)";
+            }
+            currentItemBox.classList.add('opacity-0');
+            
+            await delay(500);
             // Hide for next item
             currentItemBox.classList.remove('scale-100', 'opacity-100');
             currentItemBox.classList.add('scale-0', 'opacity-0');
-            await delay(300);
+            currentItemBox.style.transform = "";
         }
     }
 
