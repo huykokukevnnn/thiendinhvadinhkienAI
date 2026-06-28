@@ -530,7 +530,6 @@ async function startAutoRun() {
     if (progressText) progressText.textContent = '100%';
     clearInterval(binaryInterval);
     if (consoleText) consoleText.textContent = "// Hoàn tất phân tích dữ liệu.";
-    const aiCoreIcon = document.getElementById('ai-core-icon');
     if (aiCoreIcon) aiCoreIcon.classList.remove('animate-core-pulse');
 
     // Set data for LIME (State 5) using the misclassified image
