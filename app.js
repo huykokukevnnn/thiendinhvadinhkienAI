@@ -168,6 +168,16 @@ function setupTrainingRound(roundNumber) {
     activeDraggedItem = null;
     document.getElementById('training-title').textContent = `Vòng Huấn Luyện ${roundNumber}`;
     
+    // Typewriter for state 1 dialogue
+    const state1Dialogue = document.getElementById('state-1-dialogue-text');
+    if (state1Dialogue) {
+        if (roundNumber === 1) {
+            typeWriter("Hướng dẫn\nBạn hãy kéo thả hình vào nơi phù hợp\nHusky sẽ được trả về trung tâm bảo tồn\nSói sẽ được thả về tự nhiên", state1Dialogue);
+        } else {
+            typeWriter("Vòng Huấn Luyện 2\nĐộ khó tăng lên. Hãy cẩn thận với những sinh vật lạ không thuộc về rừng hay trung tâm bảo tồn!", state1Dialogue);
+        }
+    }
+    
     document.getElementById('draggable-items-container').innerHTML = '';
     document.getElementById('husky-container').innerHTML = '';
     document.getElementById('wolf-container').innerHTML = '';
