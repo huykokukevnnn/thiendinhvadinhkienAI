@@ -317,14 +317,14 @@
                     <!-- Original Image -->
                     <img id="lime-base-img" src="" alt="Base" class="absolute inset-0 w-full h-full object-cover">
                     
-                    <!-- LIME Overlay Heatmap (Darkens everything else except snow) -->
-                    <div id="lime-heatmap" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 mix-blend-multiply bg-black" style="mask-image: radial-gradient(circle at 50% 80%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%); -webkit-mask-image: radial-gradient(circle at 50% 80%, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 50%);">
+                    <!-- LIME Overlay Heatmap (Darkens the dog, keeps snow bright) -->
+                    <div id="lime-heatmap" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 bg-black/90" style="mask-image: radial-gradient(ellipse at 50% 65%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 65%); -webkit-mask-image: radial-gradient(ellipse at 50% 65%, rgba(0,0,0,1) 0%, rgba(0,0,0,1) 35%, rgba(0,0,0,0) 65%);">
                     </div>
                     
-                    <div id="lime-focus-box" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 flex items-end justify-center pb-[10%]">
-                         <div class="border-2 border-red-500 rounded bg-red-500/20 w-[80%] h-[40%] flex items-start justify-end p-2 relative shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-                             <div class="bg-black/80 text-red-400 font-mono text-xs px-2 py-1 rounded absolute -top-3 -right-3 animate-pulse border border-red-500">Focus: Bối cảnh tuyết</div>
-                         </div>
+                    <div id="lime-focus-box" class="absolute inset-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-200 flex items-start justify-between p-8">
+                         <!-- Markers for snow -->
+                         <div class="bg-teal-500/80 text-white font-mono text-xs px-3 py-1 rounded animate-pulse border border-teal-300 shadow-[0_0_15px_rgba(45,212,191,0.5)]">AI Focus: Vùng Tuyết</div>
+                         <div class="bg-teal-500/80 text-white font-mono text-xs px-3 py-1 rounded animate-pulse border border-teal-300 shadow-[0_0_15px_rgba(45,212,191,0.5)] mt-32">AI Focus: Vùng Tuyết</div>
                     </div>
 
                     
