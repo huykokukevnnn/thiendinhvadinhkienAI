@@ -143,7 +143,8 @@
                         </ul>
                     </div>
                     
-                    <div class="w-full bg-white rounded-xl shadow-inner border border-slate-200 p-4 h-[18rem] flex flex-col items-center justify-center relative" id="draggable-items-container">
+                    <div class="w-full rounded-2xl shadow-[inset_0_0_20px_rgba(0,0,0,0.8)] border-4 border-slate-800 h-[18rem] flex flex-col items-center justify-center relative bg-cover bg-center overflow-hidden" style="background-image: url('scanner_pad_pixel.png');" id="draggable-items-container">
+                        <div class="absolute inset-0 bg-teal-500/10 pointer-events-none mix-blend-overlay"></div>
                         <!-- Items injected via JS -->
                         
                         <!-- Tutorial Hand (Round 1) -->
@@ -224,11 +225,12 @@
                 <!-- AI Central Scanner -->
                 <div class="w-full lg:w-[40%] flex flex-col items-center justify-center relative min-h-0">
                     <!-- Scanner UI -->
-                    <div class="w-full relative h-64 bg-slate-50 rounded-[2rem] border border-slate-200 shadow-inner flex items-center justify-center">
-                        <div class="absolute inset-0 overflow-hidden rounded-[2rem] pointer-events-none">
+                    <div class="w-full relative h-64 rounded-[2rem] border-4 border-slate-800 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] flex items-center justify-center bg-cover bg-center overflow-hidden" style="background-image: url('scanner_pad_pixel.png');">
+                        <div class="absolute inset-0 bg-teal-500/10 pointer-events-none mix-blend-overlay"></div>
+                        <div class="absolute inset-0 overflow-hidden rounded-[2rem] pointer-events-none z-20">
                             <div id="ai-scanner-laser" class="absolute top-0 bottom-0 left-0 w-2 bg-teal-400 shadow-[0_0_20px_5px_rgba(45,212,191,0.5)] z-20 hidden"></div>
                         </div>
-                        <div id="ai-current-item" class="relative z-30 w-48 h-48 rounded-2xl bg-white shadow-2xl border-4 border-transparent overflow-hidden transform transition-all duration-700 scale-0 opacity-0 flex-shrink-0 flex flex-col">
+                        <div id="ai-current-item" class="relative z-30 w-48 h-48 rounded-2xl bg-white shadow-2xl border-4 border-slate-700 overflow-hidden transform transition-all duration-700 scale-0 opacity-0 flex-shrink-0 flex flex-col">
                             <img src="" alt="Test image" class="w-full h-full object-cover">
                             <div id="ai-prediction-badge" class="absolute bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 rounded-full font-bold text-base shadow-lg whitespace-nowrap hidden text-white"></div>
                         </div>
