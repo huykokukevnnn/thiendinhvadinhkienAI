@@ -384,7 +384,7 @@ dropzones.forEach(zone => {
             btnSaveItem.innerHTML = '<i class="ph-bold ph-tree-evergreen"></i> Thả về tự nhiên';
             btnSaveItem.className = 'w-full py-3 text-white font-bold rounded-xl text-lg transition-all shadow-lg flex items-center justify-center gap-2 mt-2 bg-emerald-600 hover:bg-emerald-700';
         } else {
-            btnSaveItem.innerHTML = '<i class="ph-bold ph-traffic-cone"></i> Gửi về trạm';
+            btnSaveItem.innerHTML = '<i class="ph-bold ph-paper-plane-right"></i> Gửi';
             btnSaveItem.className = 'w-full py-3 text-white font-bold rounded-xl text-lg transition-all shadow-lg flex items-center justify-center gap-2 mt-2 bg-amber-500 hover:bg-amber-600';
         }
     });
