@@ -124,7 +124,7 @@ function renderNextTrainingItem() {
         
         const div = document.createElement('div');
         const isTop = index === currentTrainingItemIndex;
-        div.className = `draggable-item card-stack-item bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden relative group w-full max-w-[200px] ${isTop ? 'animate-fade-in' : ''}`;
+        div.className = `draggable-item card-stack-item bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden absolute group w-full max-w-[200px] ${isTop ? 'animate-fade-in' : ''}`;
         
         div.draggable = isTop; // Only top item is draggable
         div.dataset.id = item.id;
