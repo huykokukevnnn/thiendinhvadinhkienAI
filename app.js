@@ -1,24 +1,23 @@
+// State Tracking Object (As requested)
 const gameEngine = {
     currentState: 0,
     droppedCount: 0,
     trainingData: [
-      // Round 1
-      { id: 1, type: "Husky", src: "https://images.unsplash.com/photo-1531804055935-76f44d7c3621?auto=format&fit=crop&w=400&q=80", round: 1 },
-      { id: 2, type: "Wolf", src: "https://images.unsplash.com/photo-1590420485404-f86d22b8ab18?auto=format&fit=crop&w=400&q=80", round: 1 },
-      { id: 3, type: "Husky", src: "https://images.unsplash.com/photo-1547149666-769b42052e67?auto=format&fit=crop&w=400&q=80", round: 1 },
-      // Round 2 (With Noise/Outliers)
-      { id: 4, type: "Wolf", src: "https://images.unsplash.com/photo-1533743983669-94fa5c4338ec?auto=format&fit=crop&w=400&q=80", round: 2 },
-      { id: 5, type: "Husky", src: "https://images.unsplash.com/photo-1589941013453-ec89f33b5e95?auto=format&fit=crop&w=400&q=80", round: 2 },
-      { id: 6, type: "Other", src: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80", round: 2 }, // Cat on snow
-      { id: 7, type: "Wolf", src: "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?auto=format&fit=crop&w=400&q=80", round: 2 },
-      { id: 8, type: "Other", src: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=400&q=80", round: 2 }  // Corgi on grass
+        { id: 1, type: "Husky", src: "1.jpeg", round: 1 },
+        { id: 6, type: "Wolf", src: "6.jpeg", round: 1 },
+        { id: 2, type: "Husky", src: "2.jpg", round: 1 },
+        { id: 7, type: "Wolf", src: "7.jpg", round: 2 },
+        { id: 3, type: "Husky", src: "3.jpeg", round: 2 },
+        { id: 8, type: "Wolf", src: "8.jpg", round: 2 },
+        { id: 13, type: "Other", src: "13.jpg", round: 2 },
+        { id: 15, type: "Other", src: "15.jpg", round: 2 }
     ],
     testData: [
-      { id: 1, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "https://images.unsplash.com/photo-1608096275281-67c4ab6fbddc?auto=format&fit=crop&w=400&q=80" },
-      { id: 2, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "https://images.unsplash.com/photo-1568572933382-74d440642117?auto=format&fit=crop&w=400&q=80" },
-      { id: 3, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "https://images.unsplash.com/photo-1504221718055-6b4df9d01be8?auto=format&fit=crop&w=400&q=80" },
-      { id: 4, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "https://images.unsplash.com/photo-1605192554106-d549b1b975cd?auto=format&fit=crop&w=400&q=80" },
-      { id: 5, type: "Husky_Snow", aiGuess: "CHÓ SÓI", correct: false, src: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80" }
+        { id: 4, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "4.jpg" },
+        { id: 9, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "9.avif" },
+        { id: 5, type: "Husky", aiGuess: "Chó Husky", correct: true, src: "5.jpg" },
+        { id: 10, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "10.jpg" },
+        { id: 11, type: "Wolf", aiGuess: "Chó Sói", correct: true, src: "11.jpg" } // AI thinks this Husky is a Wolf
     ]
 };
 
@@ -82,6 +81,10 @@ function setupTrainingRound(roundNumber) {
     document.getElementById('draggable-items-container').innerHTML = '';
     document.getElementById('husky-container').innerHTML = '';
     document.getElementById('wolf-container').innerHTML = '';
+    document.getElementById('husky-counter').textContent = '0';
+    document.getElementById('wolf-counter').textContent = '0';
+    const otherCounter = document.getElementById('other-counter');
+    if (otherCounter) otherCounter.textContent = '0';
     
     // Toggle 3rd dropzone for Round 2
     const dropzoneOther = document.getElementById('dropzone-other');
@@ -115,24 +118,41 @@ function renderNextTrainingItem() {
     const container = document.getElementById('draggable-items-container');
     container.innerHTML = '';
     
-    if (currentTrainingItemIndex < currentRoundData.length) {
-        const item = currentRoundData[currentTrainingItemIndex];
+    // Render the whole stack
+    currentRoundData.forEach((item, index) => {
+        if (index < currentTrainingItemIndex) return; // already processed
+        
         const div = document.createElement('div');
-        div.className = 'draggable-item bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden relative group w-full max-w-[200px] animate-fade-in';
-        div.draggable = true;
+        const isTop = index === currentTrainingItemIndex;
+        div.className = `draggable-item card-stack-item bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden relative group w-full max-w-[200px] ${isTop ? 'animate-fade-in' : ''}`;
+        
+        div.draggable = isTop; // Only top item is draggable
         div.dataset.id = item.id;
         div.dataset.type = item.type;
+        
+        // Stack visual styling
+        const reverseIndex = currentRoundData.length - index;
+        div.style.zIndex = reverseIndex;
+        if (!isTop) {
+            const rotation = (Math.random() * 14 - 7) + 'deg';
+            const offset = (Math.random() * 10 - 5) + 'px';
+            div.style.transform = `rotate(${rotation}) translate(${offset}, ${offset}) scale(0.95)`;
+            div.style.pointerEvents = 'none'; // Only interact with top
+        } else {
+            div.style.transform = `rotate(0deg) translate(0, 0) scale(1)`;
+        }
         
         div.innerHTML = `
             <img src="${item.src}" alt="Image" class="w-full h-40 md:h-48 object-cover pointer-events-none group-hover:scale-105 transition-transform duration-300">
             <div class="scan-laser absolute inset-x-0 h-1 bg-teal-400 shadow-[0_0_15px_3px_rgba(45,212,191,0.8)] z-10 hidden"></div>
             <div class="scan-overlay absolute inset-0 bg-black/80 hidden flex-col items-center justify-center z-0 overflow-hidden">
                 <i class="ph-duotone ph-cpu text-3xl text-teal-400 animate-pulse mb-1 relative z-10"></i>
-                <span class="text-teal-400 font-mono text-xs font-bold animate-pulse text-center relative z-10">Đang trích xuất<br>đặc trưng...</span>
+                <span class="text-teal-400 font-mono text-xs font-bold animate-pulse text-center relative z-10">Đang mã hóa...</span>
             </div>
         `;
         
         div.addEventListener('dragstart', (e) => {
+            if(!div.draggable) return;
             e.dataTransfer.setData('text/plain', item.id);
             setTimeout(() => div.classList.add('opacity-50'), 0);
         });
@@ -142,8 +162,11 @@ function renderNextTrainingItem() {
         });
         
         container.appendChild(div);
-        
-        // Tutorial Overlays
+    });
+    
+    // Tutorial Overlays (for the top item)
+    if (currentTrainingItemIndex < currentRoundData.length) {
+        const item = currentRoundData[currentTrainingItemIndex];
         const tutorialHand = document.getElementById('tutorial-hand');
         const tutorialOther = document.getElementById('tutorial-other');
         
@@ -273,15 +296,10 @@ if (btnSaveItem) {
             totalWolfDropped++;
         }
         
-        // Start animation
-        const laser = activeDraggedItem.querySelector('.scan-laser');
-        const overlay = activeDraggedItem.querySelector('.scan-overlay');
-        const consoleText = document.getElementById('coding-console-text');
+        // Start Teleport Suck Animation
+        activeDraggedItem.classList.add('animate-teleport-suck');
         
-        laser.classList.remove('hidden');
-        laser.classList.add('animate-scan-vertical');
-        overlay.classList.remove('hidden');
-        overlay.classList.add('flex');
+        const consoleText = document.getElementById('coding-console-text');
         
         // Binary animation on the console
         const binaryInterval = setInterval(() => {
@@ -296,20 +314,22 @@ if (btnSaveItem) {
         
         setTimeout(() => {
             clearInterval(binaryInterval);
-            if (consoleText) consoleText.textContent = "// Đã lưu thành công vào Database.";
-            // Finished encoding
-            laser.classList.add('hidden');
-            overlay.classList.add('hidden');
-            overlay.classList.remove('flex');
+            if (consoleText) consoleText.textContent = "// Đã nạp thành công vào hệ thống.";
             
-            // Add checkmark visual
-            const check = document.createElement('div');
-            check.className = 'absolute -top-2 -right-2 w-6 h-6 bg-green-500 text-white rounded-full flex items-center justify-center shadow-md text-xs z-20';
-            check.innerHTML = '<i class="ph-bold ph-check"></i>';
-            activeDraggedItem.appendChild(check);
+            // Increment counters
+            if (activeDraggedItem.parentNode.id === 'husky-container') {
+                const counter = document.getElementById('husky-counter');
+                if(counter) counter.textContent = parseInt(counter.textContent) + 1;
+            } else if (activeDraggedItem.parentNode.id === 'wolf-container') {
+                const counter = document.getElementById('wolf-counter');
+                if(counter) counter.textContent = parseInt(counter.textContent) + 1;
+            } else if (activeDraggedItem.parentNode.id === 'other-container') {
+                const counter = document.getElementById('other-counter');
+                if(counter) counter.textContent = parseInt(counter.textContent) + 1;
+            }
             
-            // Shrink slightly to signify it's saved
-            activeDraggedItem.classList.add('scale-95', 'opacity-90');
+            // Remove item completely
+            activeDraggedItem.remove();
             activeDraggedItem = null;
             
             gameEngine.droppedCount++;
@@ -318,9 +338,10 @@ if (btnSaveItem) {
             if (gameEngine.droppedCount === currentRoundData.length) {
                 btnNextStage.classList.remove('scale-0', 'opacity-0');
             } else {
+                // Reveal the next item in the stack
                 renderNextTrainingItem();
             }
-        }, 2000);
+        }, 600); // matching teleport-suck duration
     });
 }
 
@@ -431,6 +452,7 @@ async function startAutoRun() {
     const progressBar = document.getElementById('ai-progress-bar');
     const progressText = document.getElementById('ai-progress-text');
     const consoleText = document.getElementById('ai-console-text');
+    const aiCoreIcon = document.getElementById('ai-core-icon');
     
     // Reset visuals
     huskyCountEl.textContent = '0';
@@ -439,6 +461,7 @@ async function startAutoRun() {
     
     if (progressBar) progressBar.style.width = '0%';
     if (progressText) progressText.textContent = '0%';
+    if (aiCoreIcon) aiCoreIcon.classList.add('animate-core-pulse');
     
     const binaryInterval = setInterval(() => {
         if (consoleText) {
@@ -500,18 +523,6 @@ async function startAutoRun() {
             currentItemBox.classList.remove('scale-100', 'opacity-100');
             currentItemBox.classList.add('scale-0', 'opacity-0');
             await delay(300);
-        } else {
-            // Incorrect guess (The Husky on Snow)
-            badge.classList.add('bg-red-600', 'animate-pulse');
-            wolfCount++; // AI wrongly predicted it as Wolf
-            wolfCountEl.textContent = wolfCount;
-            currentItemBox.classList.add('border-red-500');
-            
-            // Give it a moment to sink in, then clear it or keep it until transition.
-            await delay(2000);
-            currentItemBox.classList.remove('scale-100', 'opacity-100');
-            currentItemBox.classList.add('scale-0', 'opacity-0');
-            await delay(300);
         }
     }
 
@@ -519,9 +530,11 @@ async function startAutoRun() {
     if (progressText) progressText.textContent = '100%';
     clearInterval(binaryInterval);
     if (consoleText) consoleText.textContent = "// Hoàn tất phân tích dữ liệu.";
+    const aiCoreIcon = document.getElementById('ai-core-icon');
+    if (aiCoreIcon) aiCoreIcon.classList.remove('animate-core-pulse');
 
-    // Set data for LIME (State 5) using the misclassified image (the last one in the test data)
-    document.getElementById('lime-base-img').src = "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80";
+    // Set data for LIME (State 5) using the misclassified image
+    document.getElementById('lime-base-img').src = "11.jpg";
 
     // Auto transition to State 4 after all tests complete successfully
     await delay(1000);
